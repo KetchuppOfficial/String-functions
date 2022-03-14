@@ -102,8 +102,6 @@ itoa        proc
 num         equ [bp + 8]
 str         equ [bp + 6]
 radix       equ [bp + 4]
-dollar      db '$'
-minus       db '-'
 
             push bp
             mov bp, sp
@@ -112,10 +110,10 @@ minus       db '-'
             mov bx, str
             mov di, radix
 
-            cmp ax, zero
+            cmp ax, 0000h
             je  @@zero
 
-            cmp ax, zero
+            cmp ax, 0000h
             jb  @@negative
 
             jmp @@positive
@@ -126,8 +124,8 @@ minus       db '-'
 
             mov ch, dollar
             mov [bx], ch
-            jmp @@return
 
+            jmp @@return
 
 @@negative: 
             mov ch, minus
@@ -135,7 +133,6 @@ minus       db '-'
             inc bx
 
             neg ax
-
 
 @@positive: 
             xor dx, dx
@@ -145,14 +142,12 @@ minus       db '-'
             mov [bx], ch
             xor si, si
             inc bx
-            cmp ax, zero
+
+            cmp ax, 0000h
             jne @@positive
             
             mov ch, dollar
             mov [bx], ch
-
-            cmp bx, str
-            jbe @@return
 
             mov di, str
 @@change:
@@ -170,8 +165,12 @@ minus       db '-'
         
 @@return:
             mov ax, str
+            
             pop bp
             ret
+
+dollar      db '$'
+minus       db '-'
 
 itoa        endp
 ;--------------------------------------------------------------------
