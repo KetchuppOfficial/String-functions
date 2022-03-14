@@ -79,12 +79,11 @@ strlen      proc
             push bp
             mov bp, sp
 
-            mov al, 0Dh
+            mov al, 0Dh         ; should be 00h, but 0Dh is used to be able to read from CMD_LINE
             mov di, [bp + 4]
             mov bx, di
-@@while:
-            scasb
-            jnz @@while
+
+            repne scasb
 
             sub di, bx
             mov ax, di
@@ -165,7 +164,7 @@ radix       equ [bp + 4]
         
 @@return:
             mov ax, str
-            
+
             pop bp
             ret
 
@@ -189,7 +188,7 @@ symb    equ [bp + 4]
         mov al, symb
         mov ah, EOL
         
-@@while:
+@@while:`
         cmp [di], ah
         je @@check_return
         scasb
@@ -433,7 +432,7 @@ atoi    endp
 
 ;--------------------------------------------------------------------
 main:
-    if 0
+    if 1
         ;CALLING strlen ()
         push CMD_LINE
         call strlen
@@ -455,7 +454,7 @@ main:
         pop cx
     endif
 
-    if 1
+    if 0
         ;CALLING strchr ()
         push CMD_LINE
         push symbol
